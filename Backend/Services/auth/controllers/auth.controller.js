@@ -1,6 +1,7 @@
 import {getAuth} from "firebase-admin/auth"
 import{app} from "../config/firebase.js"
 import User from "../models/user.model.js"
+import { createConnection } from "mongoose"
 
 
 export const login = async (req,res)=>{
@@ -8,7 +9,7 @@ export const login = async (req,res)=>{
     const {token} = req.body
     const decoded = await getAuth(app)
     decoded.verifyIdToken(token)
-    const user = await User.findOne({
+    let user = await User.findOne({
       firebaseUid:decoded.uid
     })
     if(!user){
@@ -23,16 +24,17 @@ export const login = async (req,res)=>{
     }
 
     const sessionId= crypto.randomUUID()
-    res.cookie("session",sessionId,+{
+    res.cookie("session",sessionId,{
       httpOnly:true,
       secure:false,
-      sameSite:"strict"
+      sameSite:"strict",
+      maxAge:7*24*60*60*1000
 
 
     })
 
+    return res.status(200).json(user)
+
    } catch (error) { 
-    
- }z
- 
-}
+     return res.status(500).json({message:`login error ${error}`})
+}}
