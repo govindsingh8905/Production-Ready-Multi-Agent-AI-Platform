@@ -1,0 +1,55 @@
+import React from 'react'
+import { auth, googleProvider } from '../../utils/firebase'
+import { signInWithPopup } from 'firebase/auth'
+import api from '../../utils/axios'
+import { FcGoogle } from "react-icons/fc";
+
+function Home() {
+  const handleLogin = async (token) => {
+    try {
+      const { data } = await api.post("/auth/login", { token })
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+
+    }
+  }
+
+  const googleLogin = async () => {
+    const data = await signInWithPopup(auth, googleProvider)
+    const token = await data.user.getIdToken() // token mila
+    console.log(token)
+    await handleLogin(token)
+    console.log(data)
+  }
+
+  return (
+    <div className='h-screen flex bg-[#0d0f14]
+text-white overflow-hidden' >
+      <div className='fixed inset-0 z-50 flex items-center justify-center  bg-black/60 backdrop-blur'>
+        <div className='w-[340px]  bg-[#13151c] border-white/[0.08]rounded-5x1 p-7 flex flex-col gap-5'>
+          <div classname="">
+            <h2>Welcome to CortexAi</h2>
+
+          </div>
+
+<button onClick={googleLogin} className='w-full flex items-center justify-center gap-3 py-[11px] rounded-x1
+text-sm font-medium
+text-white bg-gradient-to-br
+from-indigo-500 to-violet-700
+hover:from-indigo-400 hover: to-violet-600 active:from-indigo-600
+active:to-violet-800
+border border-indigo-500/30 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30
+transition-all duration-150 cursor-pointer'>
+<FcGoogle size={15} className="
+text-white"/>
+Continue With Google
+</button>
+
+
+        </div>
+      </div>
+    </div>
+  )
+}
+export default Home
