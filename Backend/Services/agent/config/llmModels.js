@@ -8,7 +8,7 @@ const groq = new ChatGroq({
     maxRetries: 2,
     // other params...
 })
-const gemnini= new ChatGoogleGenerativeAI({
+const gemini= new ChatGoogleGenerativeAI({
     model: "gemini-2.5-flash",
     temperature: 0,
     maxTokens: undefined,
@@ -16,13 +16,21 @@ const gemnini= new ChatGoogleGenerativeAI({
     // other params...
 })
 
-export const getModel=(agent)=>{
+export const getModel= async (agent)=>{
     switch(agent){
-        case "groq":
-            return groq
-        case "gemini":
-            return gemnini
+        case "chat":
+            return groq;
+        case "search":
+            return groq;
+        case "coding":
+            return gemini;
+        case "pdf":
+            return groq;
+        case "ppt":
+            return groq;
+        case "image":
+            return groq;
         default:
-            return groq
+            return groq;
     }
 }

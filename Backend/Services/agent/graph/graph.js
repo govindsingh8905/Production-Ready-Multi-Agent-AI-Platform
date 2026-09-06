@@ -10,13 +10,13 @@ import { imageAgent } from "../agents/image.agent.js";
 
 const workflow = new StateGraph(agentState)
 
-workflow.addNode("router", router)
-workflow.addNode("chat", chatAgent)
-workflow.addNode("search", searchAgent)
-workflow.addNode("coding", codingAgent)
-workflow.addNode("pdf", pdfAgent)
-workflow.addNode("ppt", pptAgent)
-workflow.addNode("image", imageAgent)
+workflow.addNode("router", router) // "Router"--> node name 
+workflow.addNode("chat", chatAgent) // "Chat"--> node name
+workflow.addNode("search", searchAgent) // "Search"--> node name
+workflow.addNode("coding", codingAgent) // "Coding"--> node name
+workflow.addNode("pdf",  pdfAgent) // "PDF"--> node name
+workflow.addNode("ppt", pptAgent) // "PPT"--> node name
+workflow.addNode("image", imageAgent) // "Image"--> node name
 
 
 workflow.addEdge("__start__", "router")
