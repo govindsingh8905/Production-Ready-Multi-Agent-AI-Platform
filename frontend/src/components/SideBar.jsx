@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { PanelLeftIcon, PenBoxIcon, PenSquare,Plus } from "lucide-react"
 import { getConversation } from '../features/getConversations'
-import { useDispatch } from 'react-redux'
-import { setConversations } from '../redux/conversationSlice.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { addConversation, setConversations } from '../redux/conversationSlice.js'
 import { createConversation } from '../features/createConversation'
 
 function SideBar() {
   const [collapsed , setCollapsed] = useState(false)
   const dispatch = useDispatch()
+  const {conversations,selectedConversation} = useSelector(state=>state.conversation)
   useEffect( ()=>{
     const getConv= async()=>{
       const data =await getConversation()
@@ -15,6 +16,10 @@ function SideBar() {
     }
     getConv()
   },[])
+  const handleCreateConversation=async()=>{
+    const data = await createConversation()
+    dispatch(addConversation(data))
+  }
   return (
     <div className='fixed lg:static inset-y-0 left-0 z-50 w-[270px] h-screen shrink-0 bg-[#0d0f14] border-r border-white/[0.06]'>
     
@@ -25,9 +30,7 @@ function SideBar() {
         <div className='flex items-center gap-2.5 px-4 py-4 border-b border-white/[0.06]'>
         
         <div className='hidden lg:flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/[0.05] transition-colors duration-150 bg-transparent border-none cursor-pointer'
-        onClick={()=>setCollapsed(true)}
-        
-        >
+        onClick={()=>setCollapsed(true)}>
             
             <PanelLeftIcon/>
       </div>
@@ -36,25 +39,43 @@ function SideBar() {
         CortexAI
       </span>
 
-        <span className='text-[10px] font-medium text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-full tracking-wide'>
+        <span className='text-[10px] font-medium text-indigo-400 bg-indigo-500/10 bor33der border-indigo-500/20 px-2 py-0.5 rounded-full tracking-wide'>
           Free
 
         </span>
-        <button className='flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/[0.05] transition-colors duration-150 bg-transparent border-none cursor-pointer ' onClick={()=>createConversation()}>
+        <button className='flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/[0.05] transition-colors duration-150 bg-transparent border-none cursor-pointer ' 
+        onClick={handleCreateConversation}>
           <PenSquare size={20}/>
         </button>
 
         </div>
 
         <div className='px-4 pt-4 pb-1'>
-          <button className='w-full flex items-center justify-center gap-2 text-sm font-medium text-white bg-gradient-to-br from-indigo-500 to-violet-700 rounded-xl py-[10px] border-none cursor-pointer hover:opacity-90 transition-opacity duration-150'>
+          <button className='w-full flex items-center justify-center gap-2 text-sm font-medium text-white bg-gradient-to-br from-indigo-500 to-violet-700 rounded-xl py-[10px] border-none cursor-pointer hover:opacity-90 transition-opacity duration-150'
+           onClick={handleCreateConversation}>
             <Plus size={20}/>
             New Chat
           </button>
 
         </div>
 
-        <div>
+       {conversations.length === 0 ? (
+          <div className='px-5 pt-4 pb-1.5 text-[10.5px] font-semibold uppercase tracking-widest text-slate-600'>No Recent Conversations</div>
+        ) : (
+          <div className='px-5 pt-4 pb-1.5 text-[10.5px] font-semibold uppercase text-slate-600'>Recents</div>
+        )}
+
+        <div className='flex-1 overflow-y-auto px-2.5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
+          {conversations.map((conv,i)=>{
+            const isActive=selectedConversation?._id==conv?._id
+            return (
+              <div className=''>
+
+              </div>
+
+            )
+            
+          })}
 
         </div>
 
