@@ -47,7 +47,7 @@ export const getMessages=async (req,res)=>{
         res.status(200).json(messages);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: `get messages error${error}`});
+        res.status(500).json({ message: `Get messages error${error}`});
     }
 
 }
@@ -59,7 +59,7 @@ export const updateConversation = async(req, res) => {
     res.status(200).json(conversation);
    } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error getting conversations" });
+    res.status(500).json({ message: "Update conversations Error" });
    }
 };
 

@@ -4,7 +4,7 @@ import mongoose from "mongoose"
  const conversationSchema = new mongoose.Schema({
      title:{
         type:String,
-        default:"new chat"
+        default:"New Chat"
      },
      userId:{
         type:String 

@@ -5,7 +5,7 @@ const userSlice= createSlice({
     initialState:{
         userData:null
     },
-    reducers:{
+    reducers:{ // state ke andar ke data ko update krne ke liye hota h reducers
         setUserData:(state,action)=>{
             state.userData=action.payload
 
