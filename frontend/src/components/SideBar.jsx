@@ -24,7 +24,7 @@ import { setUserData } from "../redux/userSlice.js";
 function SideBar() {
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useDispatch(); // dispatch ka instance banaya
-  const { imageError, setImageError } = useState(false);
+  const [ imageError, setImageError ] = useState(false);
   const { conversations, selectedConversation } = useSelector(
     (state) => state.conversation,
   );
@@ -110,7 +110,7 @@ function SideBar() {
       <div className="flex flex-col h-full ">
         <div className="flex items-center gap-2.5 px-4 py-4 border-b border-white/[0.06]">
           <div
-            className="hidden lg:flex items-center justify-center w-7 h-7 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/[0.05] transition-colors duration-150 bg-transparent border-none cursor-pointer"
+            className="hidden lg:flex items-center justify-center w-7 h-0.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/[0.05] transition-colors duration-150 bg-transparent border-none cursor-pointer"
             onClick={() => setCollapsed(true)}
           >
             <PanelLeftIcon />
@@ -195,11 +195,11 @@ function SideBar() {
                     alt={"image"}
                     onError={() => setImageError(true)}
                   />
-                ) : (
+                ) : 
                   <div className="w-9 h-9 rounded-[10px] bg-white/[0.06] flex items-center justify-center">
                     <User />
                   </div>
-                )}
+                }
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13.5px] font-semibold text-slate-100 truncate">
