@@ -46,10 +46,14 @@ export const router = async (state) => {
     pdf
     ppt
     pdf
-    image
+    image 
+
+    
 
     User Query:
     ${state.prompt}
+
+
     
     `
 

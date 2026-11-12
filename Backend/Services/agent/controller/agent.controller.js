@@ -1,18 +1,34 @@
 import axios from "axios"
 import { graph } from "../graph/graph.js"
+import { addMessage } from "../config/memory.js"
+import redis from "../../../Shared/redis/redis.js"
 
 export const agent = async(req,res)=>{
     try{
         const {prompt,conversationId} = req.body
+        await redis.del(`messages-${conversationId}`)
         await axios.post(`${process.env.CHAT_SERVICE}/save-messages`, {
           conversationId,role:"user",content:prompt
-        }) // daya base me save hogi conversationid role prompt 
+        }) // database me save hogi conversationid role prompt 
 
         const result = await graph.invoke({
             prompt,
             conversationId
-        }) // graph invoke
-        const response =result.aiResponse 
+        })
+        const response =result.aiResponse  
+        // graph invoke
+
+        await addMessage(conversationId,"user",prompt)
+
+         await addMessage(conversationId,"assistant",response)
+   
+
+
+          await axios.post(`${process.env.CHAT_SERVICE}/save-messages`, {
+          conversationId,role:"assistant",content:response
+        }) 
+
+        
 
         return res.status(200).json(response)
 
