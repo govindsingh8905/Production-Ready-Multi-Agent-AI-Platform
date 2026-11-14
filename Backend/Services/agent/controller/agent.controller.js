@@ -1,19 +1,18 @@
 import axios from "axios"
 import { graph } from "../graph/graph.js"
 import { addMessage } from "../config/memory.js"
-import redis from "../../../Shared/redis/redis.js"
 
 export const agent = async(req,res)=>{
     try{
-        const {prompt,conversationId} = req.body
-        await redis.del(`messages-${conversationId}`)
+        const {prompt,conversationId,agent} = req.body
         await axios.post(`${process.env.CHAT_SERVICE}/save-messages`, {
           conversationId,role:"user",content:prompt
         }) // database me save hogi conversationid role prompt 
 
         const result = await graph.invoke({
             prompt,
-            conversationId
+            conversationId,
+            agent
         })
         const response =result.aiResponse  
         // graph invoke
@@ -25,12 +24,15 @@ export const agent = async(req,res)=>{
 
 
           await axios.post(`${process.env.CHAT_SERVICE}/save-messages`, {
-          conversationId,role:"assistant",content:response
+          conversationId,role:"assistant",content:response,images:result.images
         }) 
 
         
 
-        return res.status(200).json(response)
+        return res.status(200).json({
+            answer:response,
+            images:result.images
+        })
 
 
 

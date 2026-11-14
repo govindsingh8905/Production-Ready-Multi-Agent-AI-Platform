@@ -11,6 +11,7 @@ const ChatArea = () => {
   useEffect(()=>{
     const getMesg=async()=>{
       if(selectedConversation){
+        if(selectedConversation.title=="New Chat") return;
        const data = await getMessages(selectedConversation?._id)
        console.log(selectedConversation?._id)
        dispatch(setMessages(data))
@@ -19,7 +20,7 @@ const ChatArea = () => {
     getMesg();
 
 
-  },[selectedConversation])
+  },[selectedConversation?.__id])
   return (
     <div className='flex-1 flex flex-col'>
       <Nav/>

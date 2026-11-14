@@ -5,7 +5,26 @@ import { getMemory } from "../config/memory.js"
 export const chatAgent=async(state)=>{
     const llm = await getModel("chat")
     const history= await getMemory(state.conversationId)
+
+    const searchContext = state.searchResults?`
+    Web Search Results:
+    ${JSON.stringify(state.searchResults)}
+    Answer the user using only the above results.
+`:""
+    
+    
+    
+    
     const systemPrompt = `you are cortex Ai, an intelligent assistant
+    
+    
+    ${searchContext}
+    if there is searchcontext exists:
+    - use search results to answer.
+    -do not mention internal tools.
+    
+    
+    
     
     rules:
     for simple question , greetings and short question , respond naturally in plain text.
